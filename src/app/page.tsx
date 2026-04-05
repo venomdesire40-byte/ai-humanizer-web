@@ -1,61 +1,57 @@
 "use client";
 import { useState, useEffect } from "react";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export default function Home() {
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
   const [tone, setTone] = useState("natural");
+  const [isLoading, setIsLoading] = useState(false);
   const [isCopying, setIsCopying] = useState(false);
   const [stats, setStats] = useState({ words: 0, chars: 0 });
+
+  // 🔴 APNI API KEY YAHAN " AIzaSyBlxaDIAIm8AoeoD1SWJPneQlDwHMufcPs " KE ANDAR PASTE KAREIN
+  const API_KEY = "YOUR_GEMINI_API_KEY_HERE"; 
+  const genAI = new GoogleGenerativeAI(API_KEY);
 
   useEffect(() => {
     const words = inputText.trim() ? inputText.trim().split(/\s+/).length : 0;
     setStats({ words, chars: inputText.length });
   }, [inputText]);
 
-  const humanizeText = () => {
-    if (!inputText) return setOutputText("Kuch likhein to sahi! ✨");
+  const humanizeWithAI = async () => {
+    if (!inputText) return alert("Bhai, pehle text to likho!");
+    setIsLoading(true);
+    try {
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      const prompt = `Rewrite the following text to make it sound 100% human and natural. Use a ${tone} tone. Remove all AI-like patterns. Text: ${inputText}`;
 
-    let processedText = inputText;
-
-    if (tone === "professional") {
-      processedText = processedText
-        .replace(/\bI think\b/gi, "It is my professional assessment")
-        .replace(/\bgood\b/gi, "exceptional")
-        .replace(/\bhelp\b/gi, "facilitate")
-        .replace(/\bAI\b/gi, "automated intelligence");
-    } else if (tone === "casual") {
-      processedText = processedText
-        .replace(/\bGreetings\b/gi, "Hey there!")
-        .replace(/\butilize\b/gi, "use")
-        .replace(/\bAI\b/gi, "bot")
-        .replace(/\btherefore\b/gi, "so");
-    } else {
-      processedText = processedText
-        .replace(/\bAI\b/gi, "human-like intelligence")
-        .replace(/\bgenerate\b/gi, "create")
-        .replace(/\balgorithm\b/gi, "natural flow");
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      setOutputText(response.text());
+    } catch (error) {
+      console.error("Error:", error);
+      setOutputText("Backend pe masla hai, shayad API Key ghalat hai!");
+    } finally {
+      setIsLoading(false);
     }
-
-    setOutputText(processedText);
   };
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-slate-200 flex flex-col items-center py-12 px-4 font-sans text-center">
+    <div className="min-h-screen bg-[#020617] text-slate-200 flex flex-col items-center py-12 px-4 font-sans">
       <div className="max-w-4xl w-full">
-        <h1 className="text-4xl md:text-6xl font-black tracking-tight bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent mb-4">
-          AI HUMANIZER PRO MAX
+        <h1 className="text-5xl font-black text-center bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent mb-8">
+          AI HUMANIZER BEAST 🧬
         </h1>
-        <p className="text-slate-400 text-lg mb-8">Zaid Khalid's Professional Edition</p>
 
-        <div className="bg-[#1e293b] border border-slate-700/50 rounded-3xl shadow-2xl p-6 md:p-8 text-left">
-          <div className="flex bg-[#0f172a] p-1 rounded-2xl mb-6 w-fit mx-auto border border-slate-700">
+        <div className="bg-[#0f172a] border border-slate-800 rounded-3xl p-8 shadow-2xl shadow-blue-500/10">
+          <div className="flex gap-2 mb-6 bg-[#1e293b] p-1 rounded-xl w-fit mx-auto border border-slate-700">
             {["natural", "professional", "casual"].map((t) => (
               <button
                 key={t}
                 onClick={() => setTone(t)}
-                className={`px-4 py-2 md:px-6 rounded-xl text-xs md:text-sm font-bold uppercase transition-all ${
-                  tone === t ? "bg-indigo-600 text-white shadow-lg" : "text-slate-500 hover:text-slate-300"
+                className={`px-6 py-2 rounded-lg text-xs font-bold uppercase transition-all ${
+                  tone === t ? "bg-blue-600 text-white shadow-lg" : "text-slate-500 hover:text-slate-300"
                 }`}
               >
                 {t}
@@ -63,57 +59,42 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="relative group">
-            <textarea
-              className="w-full h-64 p-6 bg-[#0f172a] border border-slate-700 rounded-2xl focus:ring-4 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none text-lg transition-all placeholder-slate-600 resize-none"
-              placeholder="Paste AI text here..."
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-            />
-            <div className="absolute bottom-4 right-6 flex gap-4 text-xs font-mono text-slate-500">
-              <span>{stats.words} WORDS</span>
-              <span>{stats.chars} CHARS</span>
-            </div>
-          </div>
+          <textarea
+            className="w-full h-60 p-6 bg-[#020617] border border-slate-800 rounded-2xl outline-none focus:border-blue-500 transition-all text-lg resize-none placeholder-slate-700"
+            placeholder="Paste your AI text here..."
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+          />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-            <button
-              onClick={humanizeText}
-              className="bg-indigo-600 hover:bg-indigo-500 text-white font-black py-4 rounded-2xl shadow-xl shadow-indigo-500/20 transition-all transform active:scale-95 text-lg uppercase tracking-widest"
-            >
-              Transform ✨
-            </button>
-            <button
-              onClick={() => { setInputText(""); setOutputText(""); }}
-              className="bg-slate-800 hover:bg-slate-700 text-slate-400 font-bold py-4 rounded-2xl transition-all uppercase tracking-widest"
-            >
-              Reset
-            </button>
-          </div>
+          <button
+            onClick={humanizeWithAI}
+            disabled={isLoading}
+            className="w-full mt-6 bg-gradient-to-r from-blue-600 to-cyan-500 hover:scale-[1.02] text-white font-black py-5 rounded-2xl transition-all disabled:opacity-50 uppercase tracking-[0.2em] text-lg shadow-xl shadow-blue-500/20"
+          >
+            {isLoading ? "AI is Thinking... 🧠" : "Humanize with Gemini ✨"}
+          </button>
 
           {outputText && (
-            <div className="mt-10 p-6 bg-indigo-500/5 border border-indigo-500/20 rounded-2xl">
-              <div className="flex justify-between items-center mb-4">
-                <span className="text-indigo-400 font-black text-xs uppercase tracking-[0.2em]">Output ({tone})</span>
+            <div className="mt-10 p-6 bg-slate-900/80 border border-blue-500/30 rounded-2xl relative animate-in fade-in slide-in-from-bottom-4">
+               <div className="flex justify-between items-center mb-4">
+                <span className="text-blue-400 font-bold text-xs tracking-widest uppercase">Result ({tone})</span>
                 <button
                   onClick={() => {
                     navigator.clipboard.writeText(outputText);
                     setIsCopying(true);
                     setTimeout(() => setIsCopying(false), 2000);
                   }}
-                  className={`px-4 py-2 rounded-xl font-bold text-xs transition-all ${
-                    isCopying ? "bg-green-500 text-white" : "bg-indigo-600 text-white"
-                  }`}
+                  className={`px-4 py-1 rounded-lg text-xs font-bold transition-all ${isCopying ? "bg-green-600" : "bg-blue-600"}`}
                 >
-                  {isCopying ? "COPIED! ✅" : "COPY RESULT"}
+                  {isCopying ? "COPIED! ✅" : "COPY"}
                 </button>
               </div>
               <p className="text-slate-300 leading-relaxed text-lg italic">{outputText}</p>
             </div>
           )}
         </div>
-        <footer className="mt-12 text-slate-600 text-sm font-medium">
-          Built by Zaid Khalid • 2026
+        <footer className="mt-12 text-center text-slate-600 font-medium">
+          Zaid Khalid Edition • Powered by Gemini AI
         </footer>
       </div>
     </div>

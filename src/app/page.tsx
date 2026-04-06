@@ -10,6 +10,7 @@ export default function Home() {
   const [isCopying, setIsCopying] = useState(false);
   const [stats, setStats] = useState({ words: 0, chars: 0 });
 
+  // API Key & Gemini Setup
   const API_KEY = "AIzaSyBlxaDIAIm8AoeoD1SWJPneQlDwHMufcPs"; 
   const genAI = new GoogleGenerativeAI(API_KEY);
 
@@ -23,7 +24,7 @@ export default function Home() {
     setIsLoading(true);
     try {
       const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-      const prompt = `Rewrite this for a student. Make it sound 100% human and bypass AI detection. Style: ${taskType}. Text: ${inputText}`;
+      const prompt = `Act as an expert Academic Writer. Rewrite this for a student to sound 100% human and bypass AI detection (Turnitin/GPTZero). Style: ${taskType}. Text: ${inputText}`;
       const result = await model.generateContent(prompt);
       const response = await result.response;
       setOutputText(response.text());
@@ -38,7 +39,7 @@ export default function Home() {
     <div className="min-h-screen bg-[#0a0a0a] text-[#ededed] flex flex-col items-center py-16 px-6 font-sans">
       <div className="max-w-4xl w-full">
         
-        {/* Minimalist Header */}
+        {/* Header Section */}
         <div className="text-center mb-12">
           <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-white mb-2">
             HUMAN<span className="text-[#3b82f6]">LY</span>
@@ -48,10 +49,10 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Main Glassmorphism Card */}
+        {/* Main Tool Card */}
         <div className="bg-[#141414] border border-[#262626] rounded-[2rem] p-6 md:p-8 shadow-2xl">
           
-          {/* New Modern Selector */}
+          {/* Task Selector */}
           <div className="flex flex-wrap justify-center gap-2 mb-10">
             {[
               { id: "assignment", label: "Assignment" },
@@ -72,7 +73,7 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Clean Input Area */}
+          {/* Input Area */}
           <div className="relative group">
             <textarea
               className="w-full h-80 p-8 bg-[#0a0a0a] border border-[#262626] rounded-[1.5rem] outline-none focus:border-[#3b82f6] transition-all text-lg text-white placeholder-[#333333] leading-relaxed"
@@ -86,7 +87,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* High-Tech Button */}
           <button
             onClick={humanizeForStudents}
             disabled={isLoading}
@@ -95,10 +95,9 @@ export default function Home() {
             {isLoading ? "Bypassing AI..." : "Execute Transformation"}
           </button>
 
-          {/* Sophisticated Result Area */}
+          {/* Result Area */}
           {outputText && (
             <div className="mt-12 space-y-6 animate-in fade-in slide-in-from-bottom-8">
-               {/* Minimal Score Bar */}
                <div className="flex items-center gap-4 bg-[#0a0a0a] p-4 rounded-xl border border-[#262626]">
                   <div className="w-2 h-2 rounded-full bg-[#22c55e] animate-pulse"></div>
                   <span className="text-[10px] font-bold text-[#666666] uppercase tracking-[0.2em]">Safety Level: High (99.2%)</span>
@@ -123,13 +122,52 @@ export default function Home() {
                     {isCopying ? "COPIED" : "COPY"}
                   </button>
                 </div>
-                <div className="text-[#d4d4d4] leading-relaxed text-xl font-medium whitespace-pre-wrap selection:bg-[#3b82f6]">
+                <div className="text-[#d4d4d4] leading-relaxed text-xl font-medium whitespace-pre-wrap">
                   {outputText}
                 </div>
               </div>
             </div>
           )}
         </div>
+
+        {/* --- NEW SEO & LANDING PAGE CONTENT START --- */}
+        <div className="mt-24 max-w-3xl mx-auto text-left space-y-16 border-t border-[#1a1a1a] pt-16">
+          <section>
+            <h2 className="text-2xl font-bold text-white mb-4 italic">The Ultimate Student AI Bypass Tool 🎓</h2>
+            <p className="text-[#888888] leading-relaxed">
+              Assignments aur Research Papers mein AI detection se bachna ab mushkil nahi. 
+              Hamara tool khas taur par university students ke liye banaya gaya hai taake wo 
+              ChatGPT ya Claude se likha gaya content 100% human-like bana sakein. 
+              Ye tool Turnitin aur GPTZero jaise detectors ko bypass karne mein madad karta hai.
+            </p>
+          </section>
+
+          <section className="grid md:grid-cols-2 gap-8">
+            <div className="p-6 bg-[#111111] border border-[#222222] rounded-2xl">
+              <h3 className="text-blue-500 font-bold mb-2 text-sm uppercase">🔒 Privacy First</h3>
+              <p className="text-[11px] text-[#666666] leading-relaxed">Hum aapka data save nahi karte. Aapka assignment aur research work safe rehta hai.</p>
+            </div>
+            <div className="p-6 bg-[#111111] border border-[#222222] rounded-2xl">
+              <h3 className="text-green-500 font-bold mb-2 text-sm uppercase">⚡ Instant Stealth</h3>
+              <p className="text-[11px] text-[#666666] leading-relaxed">Ek click mein AI patterns khatam karein aur natural human flow laein jo detection-proof ho.</p>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-bold text-white mb-6 uppercase tracking-widest">Common Questions (FAQs)</h2>
+            <div className="space-y-6">
+              <div>
+                <h4 className="text-sm font-bold text-[#ededed] mb-1 italic underline decoration-blue-500">Kya ye Turnitin detect kar sakta hai?</h4>
+                <p className="text-xs text-[#666666] leading-relaxed">Hamara advanced algorithm sentence structure ko bilkul human style mein change kar deta hai, jo detection scores ko bypass karne mein madad karta hai.</p>
+              </div>
+              <div>
+                <h4 className="text-sm font-bold text-[#ededed] mb-1 italic underline decoration-blue-500">Ye tool free hai?</h4>
+                <p className="text-xs text-[#666666] leading-relaxed">Ji haan, Zaid Khalid Edition students ke liye hamesha free aur fast rahe ga.</p>
+              </div>
+            </div>
+          </section>
+        </div>
+        {/* --- SEO & LANDING PAGE CONTENT END --- */}
 
         <footer className="mt-20 text-center">
             <p className="text-[#333333] text-[9px] font-bold tracking-[0.6em] uppercase mb-2">

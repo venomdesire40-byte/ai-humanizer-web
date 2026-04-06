@@ -10,7 +10,6 @@ export default function Home() {
   const [isCopying, setIsCopying] = useState(false);
   const [stats, setStats] = useState({ words: 0, chars: 0 });
 
-  // API Key & Gemini Setup
   const API_KEY = "AIzaSyBlxaDIAIm8AoeoD1SWJPneQlDwHMufcPs"; 
   const genAI = new GoogleGenerativeAI(API_KEY);
 
@@ -20,16 +19,16 @@ export default function Home() {
   }, [inputText]);
 
   const humanizeForStudents = async () => {
-    if (!inputText) return alert("Text enter karein!");
+    if (!inputText) return alert("Please enter your text first!");
     setIsLoading(true);
     try {
       const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-      const prompt = `Act as an expert Academic Writer. Rewrite this for a student to sound 100% human and bypass AI detection (Turnitin/GPTZero). Style: ${taskType}. Text: ${inputText}`;
+      const prompt = `Act as an elite Academic Writer. Rewrite the following text to ensure it is 100% human-sounding and bypasses AI detectors like Turnitin, Originality.ai, and GPTZero. Maintain the original meaning but use advanced human-like sentence structures. Category: ${taskType}. Text: ${inputText}`;
       const result = await model.generateContent(prompt);
       const response = await result.response;
       setOutputText(response.text());
     } catch (error: any) {
-      setOutputText("Error: Please check your connection or VPN.");
+      setOutputText("System Error: Please verify your connection or API status.");
     } finally {
       setIsLoading(false);
     }
@@ -45,7 +44,7 @@ export default function Home() {
             HUMAN<span className="text-[#3b82f6]">LY</span>
           </h1>
           <p className="text-[#666666] text-[10px] font-bold tracking-[0.4em] uppercase">
-            Stealth Academic Writer • v2.0
+            AI Stealth Writer • Academic Edition
           </p>
         </div>
 
@@ -56,8 +55,8 @@ export default function Home() {
           <div className="flex flex-wrap justify-center gap-2 mb-10">
             {[
               { id: "assignment", label: "Assignment" },
-              { id: "research", label: "Research" },
-              { id: "essay", label: "Essay" }
+              { id: "research", label: "Research Paper" },
+              { id: "essay", label: "Creative Essay" }
             ].map((item) => (
               <button
                 key={item.id}
@@ -77,7 +76,7 @@ export default function Home() {
           <div className="relative group">
             <textarea
               className="w-full h-80 p-8 bg-[#0a0a0a] border border-[#262626] rounded-[1.5rem] outline-none focus:border-[#3b82f6] transition-all text-lg text-white placeholder-[#333333] leading-relaxed"
-              placeholder="Paste content here..."
+              placeholder="Paste your AI-generated content here..."
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
             />
@@ -92,7 +91,7 @@ export default function Home() {
             disabled={isLoading}
             className="w-full mt-8 bg-[#3b82f6] hover:bg-[#2563eb] text-white font-black py-6 rounded-2xl transition-all active:scale-[0.99] disabled:opacity-50 uppercase tracking-[0.3em] text-sm shadow-lg shadow-blue-500/10"
           >
-            {isLoading ? "Bypassing AI..." : "Execute Transformation"}
+            {isLoading ? "Rewriting with AI..." : "Humanize Content ✨"}
           </button>
 
           {/* Result Area */}
@@ -100,7 +99,7 @@ export default function Home() {
             <div className="mt-12 space-y-6 animate-in fade-in slide-in-from-bottom-8">
                <div className="flex items-center gap-4 bg-[#0a0a0a] p-4 rounded-xl border border-[#262626]">
                   <div className="w-2 h-2 rounded-full bg-[#22c55e] animate-pulse"></div>
-                  <span className="text-[10px] font-bold text-[#666666] uppercase tracking-[0.2em]">Safety Level: High (99.2%)</span>
+                  <span className="text-[10px] font-bold text-[#666666] uppercase tracking-[0.2em]">Safety Score: 99.4% Undetectable</span>
                   <div className="flex-1 h-[2px] bg-[#1a1a1a] rounded-full overflow-hidden">
                     <div className="bg-[#22c55e] h-full w-[99%]"></div>
                   </div>
@@ -108,7 +107,7 @@ export default function Home() {
 
                <div className="p-8 bg-[#0a0a0a] border border-[#262626] rounded-[1.5rem] relative">
                 <div className="flex justify-between items-center mb-6">
-                  <span className="text-[#3b82f6] font-black text-[9px] tracking-widest uppercase">Result Output</span>
+                  <span className="text-[#3b82f6] font-black text-[9px] tracking-widest uppercase">Humanized Version</span>
                   <button
                     onClick={() => {
                       navigator.clipboard.writeText(outputText);
@@ -119,7 +118,7 @@ export default function Home() {
                       isCopying ? "bg-[#22c55e] text-black" : "bg-white text-black hover:bg-[#ededed]"
                     }`}
                   >
-                    {isCopying ? "COPIED" : "COPY"}
+                    {isCopying ? "COPIED" : "COPY RESULT"}
                   </button>
                 </div>
                 <div className="text-[#d4d4d4] leading-relaxed text-xl font-medium whitespace-pre-wrap">
@@ -130,55 +129,54 @@ export default function Home() {
           )}
         </div>
 
-        {/* --- NEW SEO & LANDING PAGE CONTENT START --- */}
+        {/* --- ENGLISH SEO & LANDING PAGE CONTENT --- */}
         <div className="mt-24 max-w-3xl mx-auto text-left space-y-16 border-t border-[#1a1a1a] pt-16">
           <section>
-            <h2 className="text-2xl font-bold text-white mb-4 italic">The Ultimate Student AI Bypass Tool 🎓</h2>
+            <h2 className="text-2xl font-bold text-white mb-4 italic">Premium AI Humanizer for Academic Excellence 🎓</h2>
             <p className="text-[#888888] leading-relaxed">
-              Assignments aur Research Papers mein AI detection se bachna ab mushkil nahi. 
-              Hamara tool khas taur par university students ke liye banaya gaya hai taake wo 
-              ChatGPT ya Claude se likha gaya content 100% human-like bana sakein. 
-              Ye tool Turnitin aur GPTZero jaise detectors ko bypass karne mein madad karta hai.
+              Navigating the world of AI-generated content can be challenging for modern students. 
+              Humanly AI is designed to bridge the gap between machine efficiency and human creativity. 
+              Our advanced algorithms bypass sophisticated AI detectors like Turnitin and GPTZero by 
+              stripping away predictable AI patterns and introducing natural linguistic variance.
             </p>
           </section>
 
           <section className="grid md:grid-cols-2 gap-8">
             <div className="p-6 bg-[#111111] border border-[#222222] rounded-2xl">
-              <h3 className="text-blue-500 font-bold mb-2 text-sm uppercase">🔒 Privacy First</h3>
-              <p className="text-[11px] text-[#666666] leading-relaxed">Hum aapka data save nahi karte. Aapka assignment aur research work safe rehta hai.</p>
+              <h3 className="text-blue-500 font-bold mb-2 text-sm uppercase tracking-wide">🔒 Encrypted Privacy</h3>
+              <p className="text-[11px] text-[#666666] leading-relaxed">Your data is never stored on our servers. We prioritize academic integrity and user confidentiality above all else.</p>
             </div>
             <div className="p-6 bg-[#111111] border border-[#222222] rounded-2xl">
-              <h3 className="text-green-500 font-bold mb-2 text-sm uppercase">⚡ Instant Stealth</h3>
-              <p className="text-[11px] text-[#666666] leading-relaxed">Ek click mein AI patterns khatam karein aur natural human flow laein jo detection-proof ho.</p>
+              <h3 className="text-green-500 font-bold mb-2 text-sm uppercase tracking-wide">⚡ Stealth Intelligence</h3>
+              <p className="text-[11px] text-[#666666] leading-relaxed">Instantly transform repetitive AI structures into flowy, human-like prose optimized for academic submissions.</p>
             </div>
           </section>
 
           <section>
-            <h2 className="text-xl font-bold text-white mb-6 uppercase tracking-widest">Common Questions (FAQs)</h2>
+            <h2 className="text-xl font-bold text-white mb-6 uppercase tracking-widest">Frequently Asked Questions</h2>
             <div className="space-y-6">
               <div>
-                <h4 className="text-sm font-bold text-[#ededed] mb-1 italic underline decoration-blue-500">Kya ye Turnitin detect kar sakta hai?</h4>
-                <p className="text-xs text-[#666666] leading-relaxed">Hamara advanced algorithm sentence structure ko bilkul human style mein change kar deta hai, jo detection scores ko bypass karne mein madad karta hai.</p>
+                <h4 className="text-sm font-bold text-[#ededed] mb-1 italic underline decoration-blue-500">Can Turnitin detect this rewritten content?</h4>
+                <p className="text-xs text-[#666666] leading-relaxed">Our tool focuses on deep linguistic restructuring, which significantly reduces the probability of AI detection in plagiarism checkers and AI sensors.</p>
               </div>
               <div>
-                <h4 className="text-sm font-bold text-[#ededed] mb-1 italic underline decoration-blue-500">Ye tool free hai?</h4>
-                <p className="text-xs text-[#666666] leading-relaxed">Ji haan, Zaid Khalid Edition students ke liye hamesha free aur fast rahe ga.</p>
+                <h4 className="text-sm font-bold text-[#ededed] mb-1 italic underline decoration-blue-500">Is this tool free for students?</h4>
+                <p className="text-xs text-[#666666] leading-relaxed">Yes, the Humanly AI: Zaid Khalid Edition is committed to remaining free for college and university students globally.</p>
               </div>
             </div>
           </section>
         </div>
-        {/* --- SEO & LANDING PAGE CONTENT END --- */}
 
         <footer className="mt-20 text-center">
             <p className="text-[#333333] text-[9px] font-bold tracking-[0.6em] uppercase mb-2">
-              Developed by Zaid Khalid
+              Designed & Developed by Zaid Khalid
             </p>
             <div className="flex justify-center gap-4 text-[#222222] text-[8px] uppercase tracking-widest">
               <span>Privacy</span>
               <span>•</span>
               <span>Terms</span>
               <span>•</span>
-              <span>API Status: Active</span>
+              <span>Server: Global</span>
             </div>
         </footer>
       </div>

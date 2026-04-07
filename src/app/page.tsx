@@ -189,6 +189,51 @@ export default function Home() {
             </div>
           </section>
         </div>
+{/* --- Content Section for SEO & Professional Look --- */}
+        <div className="mt-32 max-w-4xl mx-auto px-6 space-y-24 pb-20">
+          
+          {/* 1. How It Works */}
+          <section className="text-center space-y-12">
+            <h2 className="text-[10px] font-black tracking-[0.4em] uppercase text-blue-500">The Process</h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="p-6 bg-[#0c0c0c] border border-[#1a1a1a] rounded-3xl hover:border-blue-500/20 transition-all">
+                <div className="text-white font-bold mb-2">01. Input</div>
+                <p className="text-xs text-[#555] leading-relaxed font-medium">Paste your AI-generated text from ChatGPT or Claude.</p>
+              </div>
+              <div className="p-6 bg-[#0c0c0c] border border-[#1a1a1a] rounded-3xl hover:border-blue-500/20 transition-all">
+                <div className="text-white font-bold mb-2">02. Humanize</div>
+                <p className="text-xs text-[#555] leading-relaxed font-medium">Our algorithm restructures sentences for natural flow.</p>
+              </div>
+              <div className="p-6 bg-[#0c0c0c] border border-[#1a1a1a] rounded-3xl hover:border-blue-500/20 transition-all">
+                <div className="text-white font-bold mb-2">03. Result</div>
+                <p className="text-xs text-[#555] leading-relaxed font-medium">Get human-like content ready for university submissions.</p>
+              </div>
+            </div>
+          </section>
+
+          {/* 2. Features Grid */}
+          <section className="grid md:grid-cols-2 gap-12 items-center border-t border-[#111] pt-24">
+            <div className="space-y-6 text-left">
+              <h3 className="text-2xl font-black text-white uppercase tracking-tighter italic">Why Humanly AI?</h3>
+              <p className="text-sm text-[#888] leading-relaxed">
+                Most AI tools leave "fingerprints" that detection systems easily catch. Humanly AI re-engineers your content to preserve your original meaning while ensuring it reads naturally.
+              </p>
+              <ul className="space-y-3 text-[10px] font-bold uppercase tracking-widest text-blue-400">
+                <li className="flex items-center gap-3"><span className="w-1 h-1 bg-blue-500 rounded-full"></span> 100% Privacy - No Data Storage</li>
+                <li className="flex items-center gap-3"><span className="w-1 h-1 bg-blue-500 rounded-full"></span> High-Speed Processing</li>
+                <li className="flex items-center gap-3"><span className="w-1 h-1 bg-blue-500 rounded-full"></span> Zero Character Limits</li>
+              </ul>
+            </div>
+            <div className="bg-gradient-to-br from-blue-500/10 to-transparent p-[1px] rounded-3xl">
+               <div className="bg-[#0a0a0a] p-8 rounded-3xl border border-[#1a1a1a]">
+                  <h4 className="text-white font-bold mb-2">Built for Students</h4>
+                  <p className="text-xs text-[#555] leading-relaxed">Specially optimized for essays, research papers, and assignments where maintaining a personal voice is critical.</p>
+               </div>
+            </div>
+          </section>
+
+        </div>
+        {/* --- End of Content Section --- */}
 
         <footer className="mt-24 pb-12 flex flex-col items-center justify-center space-y-8">
   {/* Modern Floating Navigation Dock */}

@@ -190,16 +190,36 @@ export default function Home() {
           </section>
         </div>
 
-        <footer className="mt-20 text-center pb-10">
-          <div className="flex justify-center gap-6 mb-4 text-[10px] font-bold tracking-[0.2em] uppercase">
-            <a href="/about" className="text-[#888888] hover:text-white transition-all cursor-pointer">About</a>
-            <a href="/privacy" className="text-[#888888] hover:text-white transition-all cursor-pointer">Privacy</a>
-            <a href="/terms" className="text-[#888888] hover:text-white transition-all cursor-pointer">Terms</a>
-          </div>
-          <p className="text-[#333333] text-[9px] font-bold tracking-[0.3em] uppercase text-center">
-            Designed & Developed by Zaid Khalid • Server: <span className="text-green-500 animate-pulse">Active</span>
-          </p>
-        </footer>
+        <footer className="mt-24 pb-12 flex flex-col items-center justify-center space-y-8">
+  {/* Modern Floating Navigation Dock */}
+  <nav className="flex items-center gap-2 p-1.5 bg-[#111] border border-[#222] rounded-full backdrop-blur-md shadow-2xl shadow-blue-500/5">
+    <a href="/about" className="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-[#888] hover:text-white hover:bg-[#1a1a1a] rounded-full transition-all duration-300 ease-out border border-transparent hover:border-[#333]">
+      About
+    </a>
+    <div className="w-[1px] h-3 bg-[#222]"></div>
+    <a href="/privacy" className="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-[#888] hover:text-white hover:bg-[#1a1a1a] rounded-full transition-all duration-300 ease-out border border-transparent hover:border-[#333]">
+      Privacy
+    </a>
+    <div className="w-[1px] h-3 bg-[#222]"></div>
+    <a href="/terms" className="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-[#888] hover:text-white hover:bg-[#1a1a1a] rounded-full transition-all duration-300 ease-out border border-transparent hover:border-[#333]">
+      Terms
+    </a>
+  </nav>
+
+  {/* Branding & Status Line */}
+  <div className="flex flex-col items-center gap-3">
+    <p className="text-[#444] text-[9px] font-black tracking-[0.4em] uppercase flex items-center gap-3">
+      Designed by <span className="text-white/40 hover:text-white transition-colors cursor-default">Zaid Khalid</span>
+      <span className="w-1 h-1 bg-[#222] rounded-full"></span>
+      <span className="flex items-center gap-2">
+        Server <span className="relative flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+        </span>
+      </span>
+    </p>
+  </div>
+</footer>
       </div>
     </div>
   );

@@ -190,15 +190,15 @@ export default function Home() {
           </section>
         </div>
 
-        <footer className="mt-20 text-center">
-            <p className="text-[#333333] text-[9px] font-bold tracking-[0.6em] uppercase mb-4 text-center">
-              Designed & Developed by Zaid Khalid
-            </p>
-            <div className="flex justify-center gap-6 text-[#222222] text-[8px] uppercase tracking-[0.3em]">
-              <span>Privacy</span>
-              <span>Terms</span>
-              <span>Server: Active</span>
-            </div>
+        <footer className="mt-20 text-center pb-10">
+          <div className="flex justify-center gap-6 mb-4 text-[10px] font-bold tracking-[0.2em] uppercase">
+            <a href="/about" className="text-[#888888] hover:text-white transition-all cursor-pointer">About</a>
+            <a href="/privacy" className="text-[#888888] hover:text-white transition-all cursor-pointer">Privacy</a>
+            <a href="/terms" className="text-[#888888] hover:text-white transition-all cursor-pointer">Terms</a>
+          </div>
+          <p className="text-[#333333] text-[9px] font-bold tracking-[0.3em] uppercase text-center">
+            Designed & Developed by Zaid Khalid • Server: <span className="text-green-500 animate-pulse">Active</span>
+          </p>
         </footer>
       </div>
     </div>

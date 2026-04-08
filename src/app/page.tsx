@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import mammoth from "mammoth"; 
 
 export default function Home() {
@@ -10,9 +9,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [isCopying, setIsCopying] = useState(false);
   const [stats, setStats] = useState({ words: 0, chars: 0 });
-
-  const API_KEY = "AIzaSyBlxaDIAIm8AoeoD1SWJPneQlDwHMufcPs"; 
-  const genAI = new GoogleGenerativeAI(API_KEY);
 
   useEffect(() => {
     const words = inputText.trim() ? inputText.trim().split(/\s+/).length : 0;
@@ -43,11 +39,22 @@ export default function Home() {
     if (!inputText) return alert("Please enter or upload text first!");
     setIsLoading(true);
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-      const prompt = `Act as an elite Academic Writer. Rewrite the following text to ensure it is 100% human-sounding and bypasses AI detectors like Turnitin and GPTZero. Style: ${taskType}. Text: ${inputText}`;
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      setOutputText(response.text());
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          prompt: inputText,
+          style: taskType 
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.output) {
+        setOutputText(data.output);
+      } else {
+        setOutputText("System Error: API key issue or limit reached.");
+      }
     } catch (error: any) {
       setOutputText("System Error: Please verify your connection.");
     } finally {
@@ -189,7 +196,8 @@ export default function Home() {
             </div>
           </section>
         </div>
-{/* --- Content Section for SEO & Professional Look --- */}
+
+        {/* --- Content Section for SEO & Professional Look --- */}
         <div className="mt-32 max-w-4xl mx-auto px-6 space-y-24 pb-20">
           
           {/* 1. How It Works */}
@@ -233,38 +241,34 @@ export default function Home() {
           </section>
 
         </div>
-        {/* --- End of Content Section --- */}
 
         <footer className="mt-24 pb-12 flex flex-col items-center justify-center space-y-8">
-  {/* Modern Floating Navigation Dock */}
-  <nav className="flex items-center gap-2 p-1.5 bg-[#111] border border-[#222] rounded-full backdrop-blur-md shadow-2xl shadow-blue-500/5">
-    <a href="/about" className="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-[#888] hover:text-white hover:bg-[#1a1a1a] rounded-full transition-all duration-300 ease-out border border-transparent hover:border-[#333]">
-      About
-    </a>
-    <div className="w-[1px] h-3 bg-[#222]"></div>
-    <a href="/privacy" className="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-[#888] hover:text-white hover:bg-[#1a1a1a] rounded-full transition-all duration-300 ease-out border border-transparent hover:border-[#333]">
-      Privacy
-    </a>
-    <div className="w-[1px] h-3 bg-[#222]"></div>
-    <a href="/terms" className="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-[#888] hover:text-white hover:bg-[#1a1a1a] rounded-full transition-all duration-300 ease-out border border-transparent hover:border-[#333]">
-      Terms
-    </a>
-  </nav>
-
-  {/* Branding & Status Line */}
-  <div className="flex flex-col items-center gap-3">
-    <p className="text-[#444] text-[9px] font-black tracking-[0.4em] uppercase flex items-center gap-3">
-      Designed by <span className="text-white/40 hover:text-white transition-colors cursor-default">Zaid Khalid</span>
-      <span className="w-1 h-1 bg-[#222] rounded-full"></span>
-      <span className="flex items-center gap-2">
-        Server <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-        </span>
-      </span>
-    </p>
-  </div>
-</footer>
+          <nav className="flex items-center gap-2 p-1.5 bg-[#111] border border-[#222] rounded-full backdrop-blur-md shadow-2xl shadow-blue-500/5">
+            <a href="/about" className="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-[#888] hover:text-white hover:bg-[#1a1a1a] rounded-full transition-all duration-300 ease-out border border-transparent hover:border-[#333]">
+              About
+            </a>
+            <div className="w-[1px] h-3 bg-[#222]"></div>
+            <a href="/privacy" className="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-[#888] hover:text-white hover:bg-[#1a1a1a] rounded-full transition-all duration-300 ease-out border border-transparent hover:border-[#333]">
+              Privacy
+            </a>
+            <div className="w-[1px] h-3 bg-[#222]"></div>
+            <a href="/terms" className="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-[#888] hover:text-white hover:bg-[#1a1a1a] rounded-full transition-all duration-300 ease-out border border-transparent hover:border-[#333]">
+              Terms
+            </a>
+          </nav>
+          <div className="flex flex-col items-center gap-3">
+            <p className="text-[#444] text-[9px] font-black tracking-[0.4em] uppercase flex items-center gap-3">
+              Designed by <span className="text-white/40 hover:text-white transition-colors cursor-default">Zaid Khalid</span>
+              <span className="w-1 h-1 bg-[#222] rounded-full"></span>
+              <span className="flex items-center gap-2">
+                Server <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </span>
+              </span>
+            </p>
+          </div>
+        </footer>
       </div>
     </div>
   );

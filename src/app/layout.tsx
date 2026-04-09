@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+// Agar file isi folder mein hai to ye bilkul sahi hai
+import "./globals.css"; 
 
 const inter = Inter({ subsets: ["latin"] });
 

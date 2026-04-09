@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-// MODIFIED: GoogleGenerativeAI import ki zaroorat yahan nahi kyunke hum API use kar rahe hain
 import mammoth from "mammoth"; 
 
 export default function Home() {
@@ -11,14 +10,11 @@ export default function Home() {
   const [isCopying, setIsCopying] = useState(false);
   const [stats, setStats] = useState({ words: 0, chars: 0 });
 
-  // MODIFIED: Security ke liye key yahan se hata di hai, ye ab background (route.ts) se chale gi
-
   useEffect(() => {
     const words = inputText.trim() ? inputText.trim().split(/\s+/).length : 0;
     setStats({ words, chars: inputText.length });
   }, [inputText]);
 
-  // FILE UPLOAD LOGIC (No Changes)
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -38,7 +34,6 @@ export default function Home() {
     }
   };
 
-  // MODIFIED: Logic updated to connect with your Vercel API
   const humanizeForStudents = async () => {
     if (!inputText) return alert("Please enter or upload text first!");
     setIsLoading(true);
@@ -48,7 +43,7 @@ export default function Home() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           prompt: inputText,
-          style: taskType // Pass style to API
+          style: taskType 
         }),
       });
 
@@ -66,7 +61,6 @@ export default function Home() {
     }
   };
 
-  // REST OF YOUR UI (No Changes - Design 100% same)
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-[#ededed] flex flex-col items-center py-16 px-6 font-sans">
       <div className="max-w-4xl w-full">
@@ -164,7 +158,7 @@ export default function Home() {
           )}
         </div>
 
-        {/* SEO & Footer Sections (Keep as is) */}
+        {/* SEO & Footer Sections */}
         <div className="mt-24 max-w-3xl mx-auto text-left space-y-16 border-t border-[#1a1a1a] pt-16">
           <section>
             <h2 className="text-2xl font-bold text-white mb-4 italic text-left tracking-tight">Premium AI Humanizer for Academic Excellence 🎓</h2>

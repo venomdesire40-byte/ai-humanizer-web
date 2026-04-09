@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+// MODIFIED: GoogleGenerativeAI import ki zaroorat yahan nahi kyunke hum API use kar rahe hain
 import mammoth from "mammoth"; 
 
 export default function Home() {
@@ -11,15 +11,14 @@ export default function Home() {
   const [isCopying, setIsCopying] = useState(false);
   const [stats, setStats] = useState({ words: 0, chars: 0 });
 
-  const API_KEY = "AIzaSyBlxaDIAIm8AoeoD1SWJPneQlDwHMufcPs"; 
-  const genAI = new GoogleGenerativeAI(API_KEY);
+  // MODIFIED: Security ke liye key yahan se hata di hai, ye ab background (route.ts) se chale gi
 
   useEffect(() => {
     const words = inputText.trim() ? inputText.trim().split(/\s+/).length : 0;
     setStats({ words, chars: inputText.length });
   }, [inputText]);
 
-  // FILE UPLOAD LOGIC
+  // FILE UPLOAD LOGIC (No Changes)
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -39,15 +38,27 @@ export default function Home() {
     }
   };
 
+  // MODIFIED: Logic updated to connect with your Vercel API
   const humanizeForStudents = async () => {
     if (!inputText) return alert("Please enter or upload text first!");
     setIsLoading(true);
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-      const prompt = `Act as an elite Academic Writer. Rewrite the following text to ensure it is 100% human-sounding and bypasses AI detectors like Turnitin and GPTZero. Style: ${taskType}. Text: ${inputText}`;
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      setOutputText(response.text());
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          prompt: inputText,
+          style: taskType // Pass style to API
+        }),
+      });
+
+      const data = await response.json();
+      
+      if (data.output) {
+        setOutputText(data.output);
+      } else {
+        setOutputText("System Error: API key issue or limit reached.");
+      }
     } catch (error: any) {
       setOutputText("System Error: Please verify your connection.");
     } finally {
@@ -55,6 +66,7 @@ export default function Home() {
     }
   };
 
+  // REST OF YOUR UI (No Changes - Design 100% same)
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-[#ededed] flex flex-col items-center py-16 px-6 font-sans">
       <div className="max-w-4xl w-full">
@@ -152,7 +164,7 @@ export default function Home() {
           )}
         </div>
 
-        {/* --- SEO & LANDING CONTENT (Back Again!) --- */}
+        {/* SEO & Footer Sections (Keep as is) */}
         <div className="mt-24 max-w-3xl mx-auto text-left space-y-16 border-t border-[#1a1a1a] pt-16">
           <section>
             <h2 className="text-2xl font-bold text-white mb-4 italic text-left tracking-tight">Premium AI Humanizer for Academic Excellence 🎓</h2>
@@ -189,10 +201,8 @@ export default function Home() {
             </div>
           </section>
         </div>
-{/* --- Content Section for SEO & Professional Look --- */}
+
         <div className="mt-32 max-w-4xl mx-auto px-6 space-y-24 pb-20">
-          
-          {/* 1. How It Works */}
           <section className="text-center space-y-12">
             <h2 className="text-[10px] font-black tracking-[0.4em] uppercase text-blue-500">The Process</h2>
             <div className="grid md:grid-cols-3 gap-8">
@@ -211,7 +221,6 @@ export default function Home() {
             </div>
           </section>
 
-          {/* 2. Features Grid */}
           <section className="grid md:grid-cols-2 gap-12 items-center border-t border-[#111] pt-24">
             <div className="space-y-6 text-left">
               <h3 className="text-2xl font-black text-white uppercase tracking-tighter italic">Why Humanly AI?</h3>
@@ -231,40 +240,30 @@ export default function Home() {
                </div>
             </div>
           </section>
-
         </div>
-        {/* --- End of Content Section --- */}
 
         <footer className="mt-24 pb-12 flex flex-col items-center justify-center space-y-8">
-  {/* Modern Floating Navigation Dock */}
-  <nav className="flex items-center gap-2 p-1.5 bg-[#111] border border-[#222] rounded-full backdrop-blur-md shadow-2xl shadow-blue-500/5">
-    <a href="/about" className="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-[#888] hover:text-white hover:bg-[#1a1a1a] rounded-full transition-all duration-300 ease-out border border-transparent hover:border-[#333]">
-      About
-    </a>
-    <div className="w-[1px] h-3 bg-[#222]"></div>
-    <a href="/privacy" className="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-[#888] hover:text-white hover:bg-[#1a1a1a] rounded-full transition-all duration-300 ease-out border border-transparent hover:border-[#333]">
-      Privacy
-    </a>
-    <div className="w-[1px] h-3 bg-[#222]"></div>
-    <a href="/terms" className="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-[#888] hover:text-white hover:bg-[#1a1a1a] rounded-full transition-all duration-300 ease-out border border-transparent hover:border-[#333]">
-      Terms
-    </a>
-  </nav>
+          <nav className="flex items-center gap-2 p-1.5 bg-[#111] border border-[#222] rounded-full backdrop-blur-md shadow-2xl shadow-blue-500/5">
+            <a href="/about" className="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-[#888] hover:text-white hover:bg-[#1a1a1a] rounded-full transition-all duration-300 ease-out border border-transparent hover:border-[#333]">About</a>
+            <div className="w-[1px] h-3 bg-[#222]"></div>
+            <a href="/privacy" className="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-[#888] hover:text-white hover:bg-[#1a1a1a] rounded-full transition-all duration-300 ease-out border border-transparent hover:border-[#333]">Privacy</a>
+            <div className="w-[1px] h-3 bg-[#222]"></div>
+            <a href="/terms" className="px-5 py-2 text-[10px] font-bold uppercase tracking-widest text-[#888] hover:text-white hover:bg-[#1a1a1a] rounded-full transition-all duration-300 ease-out border border-transparent hover:border-[#333]">Terms</a>
+          </nav>
 
-  {/* Branding & Status Line */}
-  <div className="flex flex-col items-center gap-3">
-    <p className="text-[#444] text-[9px] font-black tracking-[0.4em] uppercase flex items-center gap-3">
-      Designed by <span className="text-white/40 hover:text-white transition-colors cursor-default">Zaid Khalid</span>
-      <span className="w-1 h-1 bg-[#222] rounded-full"></span>
-      <span className="flex items-center gap-2">
-        Server <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-        </span>
-      </span>
-    </p>
-  </div>
-</footer>
+          <div className="flex flex-col items-center gap-3">
+            <p className="text-[#444] text-[9px] font-black tracking-[0.4em] uppercase flex items-center gap-3">
+              Designed by <span className="text-white/40 hover:text-white transition-colors cursor-default">Zaid Khalid</span>
+              <span className="w-1 h-1 bg-[#222] rounded-full"></span>
+              <span className="flex items-center gap-2">
+                Server <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </span>
+              </span>
+            </p>
+          </div>
+        </footer>
       </div>
     </div>
   );

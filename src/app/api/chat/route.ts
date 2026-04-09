@@ -12,8 +12,8 @@ export async function POST(req: Request) {
 
     const genAI = new GoogleGenerativeAI(apiKey);
     
-    // Is line ko purani line se replace karein
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+   // Isay simple 'gemini-1.5-flash' kar dein, bina '-latest' ke
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const finalPrompt = `Act as an elite Academic Writer. Rewrite the following text to ensure it is 100% human-sounding and natural. Style: ${style || 'assignment'}. Text: ${prompt}`;
 

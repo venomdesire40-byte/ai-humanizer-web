@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-// Agar file isi folder mein hai to ye bilkul sahi hai
-import "./globals.css"; 
+// Path ko absolute banane ki koshish (Agar @/app folder structure hai)
+import "@/app/globals.css"; 
 
 const inter = Inter({ subsets: ["latin"] });
 

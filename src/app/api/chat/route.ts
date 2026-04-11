@@ -1,4 +1,3 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -10,23 +9,34 @@ export async function POST(req: Request) {
       return NextResponse.json({ output: "Error: API Key missing." }, { status: 500 });
     }
 
-    const genAI = new GoogleGenerativeAI(apiKey);
-    
-    // Yahan hum bilkul standard name use kar rahe hain
-    const model = genAI.getGenerativeModel({ 
-      model: "gemini-1.5-flash",
-    });
+    const finalPrompt = `Act as an elite Academic Writer. Rewrite the following text to ensure it is 100% human-sounding and natural. Style: ${style || 'assignment'}. Text: ${prompt}`;
 
-    const finalPrompt = `Act as an academic writer. Humanize this: ${prompt}`;
+    // Direct API Call using fetch (No SDK needed)
+    // Hum 'v1' stable version use kar rahe hain bajaye v1beta ke
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: finalPrompt }] }],
+        }),
+      }
+    );
 
-    // Error yahan aa raha hai, is liye hum ne try-catch ko mazeed detail di hai
-    const result = await model.generateContent(finalPrompt);
-    const text = result.response.text();
+    const data = await response.json();
 
+    if (!response.ok) {
+      throw new Error(data.error?.message || "Google API Error");
+    }
+
+    const text = data.candidates[0].content.parts[0].text;
     return NextResponse.json({ output: text });
 
   } catch (error: any) {
-    console.error("Detailed Error:", error);
+    console.error("Fetch Error:", error);
     return NextResponse.json({ 
       output: "System Error: " + error.message 
     }, { status: 500 });

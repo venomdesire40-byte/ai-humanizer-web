@@ -12,21 +12,23 @@ export async function POST(req: Request) {
 
     const genAI = new GoogleGenerativeAI(apiKey);
     
-   // Isay simple 'gemini-1.5-flash' kar dein, bina '-latest' ke
-const model = genAI.getGenerativeModel({ 
-  model: "gemini-1.5-flash",
-});
+    // Yahan hum bilkul standard name use kar rahe hain
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-1.5-flash",
+    });
 
-    const finalPrompt = `Act as an elite Academic Writer. Rewrite the following text to ensure it is 100% human-sounding and natural. Style: ${style || 'assignment'}. Text: ${prompt}`;
+    const finalPrompt = `Act as an academic writer. Humanize this: ${prompt}`;
 
+    // Error yahan aa raha hai, is liye hum ne try-catch ko mazeed detail di hai
     const result = await model.generateContent(finalPrompt);
-    const response = await result.response;
-    const text = response.text();
+    const text = result.response.text();
 
     return NextResponse.json({ output: text });
 
   } catch (error: any) {
-    console.error("API Error:", error);
-    return NextResponse.json({ output: "System Error: " + error.message }, { status: 500 });
+    console.error("Detailed Error:", error);
+    return NextResponse.json({ 
+      output: "System Error: " + error.message 
+    }, { status: 500 });
   }
 }

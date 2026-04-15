@@ -3,24 +3,27 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   try {
     const { prompt, style } = await req.json();
-    const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    const apiToken = process.env.CLOUDFLARE_API_TOKEN;
+    const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
 
-    if (!apiKey) {
-      return NextResponse.json({ output: "Error: API Key missing." }, { status: 500 });
+    if (!apiToken || !accountId) {
+      return NextResponse.json({ output: "Error: API credentials missing." }, { status: 500 });
     }
 
     const finalPrompt = `Act as an elite Academic Writer. Rewrite the following text to ensure it is 100% human-sounding and natural. Style: ${style || 'assignment'}. Text: ${prompt}`;
 
-    // Direct API Call (Stable Version)
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${apiKey}`,
+      `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/@cf/meta/llama-3.1-8b-instruct`,
       {
         method: "POST",
         headers: {
+          "Authorization": `Bearer ${apiToken}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: finalPrompt }] }],
+          messages: [
+            { role: "user", content: finalPrompt }
+          ],
         }),
       }
     );
@@ -28,11 +31,10 @@ export async function POST(req: Request) {
     const data = await response.json();
 
     if (!response.ok) {
-      // Agar yahan 404 aaye to humein pata chal jayega
-      throw new Error(data.error?.message || "Google API Error");
+      throw new Error(data.errors?.[0]?.message || "Cloudflare API Error");
     }
 
-    const text = data.candidates[0].content.parts[0].text;
+    const text = data.result.response;
     return NextResponse.json({ output: text });
 
   } catch (error: any) {

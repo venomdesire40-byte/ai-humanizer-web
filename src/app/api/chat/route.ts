@@ -10,7 +10,22 @@ export async function POST(req: Request) {
       return NextResponse.json({ output: "Error: API credentials missing." }, { status: 500 });
     }
 
-    const finalPrompt = `Act as an elite Academic Writer. Rewrite the following text to ensure it is 100% human-sounding and natural. Style: ${style || 'assignment'}. Text: ${prompt}`;
+    const finalPrompt = `You are a human student writing in a natural, conversational academic style. 
+
+Rewrite the following text with these rules:
+- Use varied sentence lengths (mix short and long sentences)
+- Add natural transitions like "Moreover", "However", "In fact"
+- Use contractions occasionally (it's, don't, isn't)
+- Avoid robotic or repetitive sentence structures
+- Add slight imperfections like a human would write
+- Use simple vocabulary where possible
+- Do NOT sound like an AI assistant
+- Write in first or third person naturally
+- Style: ${style || 'assignment'}
+
+Text to rewrite: ${prompt}
+
+Important: Output ONLY the rewritten text, nothing else.`;
 
     const response = await fetch(
       `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/@cf/meta/llama-3.1-8b-instruct`,

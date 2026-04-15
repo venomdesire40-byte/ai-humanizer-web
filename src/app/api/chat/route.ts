@@ -28,7 +28,7 @@ Text to rewrite: ${prompt}
 Important: Output ONLY the rewritten text, nothing else.`;
 
     const response = await fetch(
-      `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/@cf/meta/llama-3.1-8b-instruct`,
+      `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/@cf/mistral/mistral-7b-instruct-v0.1`,
       {
         method: "POST",
         headers: {

@@ -10,22 +10,28 @@ export async function POST(req: Request) {
       return NextResponse.json({ output: "Error: API credentials missing." }, { status: 500 });
     }
 
-    const finalPrompt = `You are a human student writing in a natural, conversational academic style. 
+    const finalPrompt = `You are a human writer. Your job is to rewrite the given text so that it passes ALL AI detection tools like ZeroGPT, GPTZero, Turnitin, and Copyleaks.
 
-Rewrite the following text with these rules:
-- Use varied sentence lengths (mix short and long sentences)
-- Add natural transitions like "Moreover", "However", "In fact"
-- Use contractions occasionally (it's, don't, isn't)
-- Avoid robotic or repetitive sentence structures
-- Add slight imperfections like a human would write
-- Use simple vocabulary where possible
-- Do NOT sound like an AI assistant
-- Write in first or third person naturally
+Follow these rules STRICTLY:
+- Write exactly like a real human being writes
+- Use VERY different sentence structures throughout — no patterns
+- Mix short, medium, and long sentences randomly
+- Start some sentences with "And", "But", "So", "Yet", "Still"
+- Use casual transitions like "On top of that", "Thing is", "What's more", "At the end of the day"
+- Add personal opinions occasionally like "I think", "In my view", "Personally"
+- Use simple everyday words — avoid fancy or complex vocabulary
+- Add slight grammar imperfections naturally — like a real person would
+- Never repeat the same sentence structure twice in a row
+- Vary paragraph lengths — some short, some long
+- Do NOT use bullet points or lists
+- Do NOT sound robotic, formal, or AI-generated
+- Do NOT use words like "crucial", "essential", "innovative", "leverage", "utilize"
+- Make it flow naturally like someone is actually thinking and writing
 - Style: ${style || 'assignment'}
 
 Text to rewrite: ${prompt}
 
-Important: Output ONLY the rewritten text, nothing else.`;
+IMPORTANT: Output ONLY the rewritten text. No explanations, no notes, nothing else.`;
 
     const response = await fetch(
       `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/@cf/meta/llama-3.3-70b-instruct-fp8-fast`,
@@ -37,6 +43,7 @@ Important: Output ONLY the rewritten text, nothing else.`;
         },
         body: JSON.stringify({
           messages: [
+            { role: "system", content: "You are a human writer who rewrites text to bypass AI detectors. You never reveal you are an AI." },
             { role: "user", content: finalPrompt }
           ],
         }),

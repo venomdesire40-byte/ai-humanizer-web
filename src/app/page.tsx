@@ -85,15 +85,15 @@ export default function Home() {
   };
 
   const articles = [
-    { tag: "Guide", title: "How to Make AI Text Undetectable in 2025", desc: "A complete walkthrough for students on transforming ChatGPT output into natural, human-sounding prose that bypasses modern detectors.", time: "5 min read" },
-    { tag: "Tips", title: "Why AI Detectors Flag Your Writing (And How to Fix It)", desc: "Understanding the patterns AI detectors look for — sentence uniformity, perplexity scores, burstiness — and the exact techniques to beat them.", time: "7 min read" },
-    { tag: "Comparison", title: "GPTZero vs Turnitin vs ZeroGPT: Which Is Most Accurate?", desc: "We tested 500 AI-generated essays across three top detectors. Here is what we found — and which one is hardest to fool.", time: "9 min read" },
-    { tag: "How-To", title: "Best Free AI Humanizer Tools Compared (2025)", desc: "Not all humanizers are equal. We ranked the top free tools based on detection bypass rate, output quality, and speed.", time: "6 min read" },
-    { tag: "Academic", title: "Is Using an AI Humanizer Cheating? The Full Debate", desc: "Universities are split. We break down the ethical arguments on both sides so you can make an informed decision.", time: "8 min read" },
-    { tag: "Tutorial", title: "How to Write AI-Assisted Essays Without Getting Caught", desc: "Step-by-step strategy used by top students — from prompt engineering to final humanization — to produce undetectable academic work.", time: "10 min read" },
-    { tag: "Research", title: "The Science Behind AI Writing Detection", desc: "How do detectors actually work? We break down perplexity, burstiness, and token prediction to explain what makes text detectable.", time: "8 min read" },
-    { tag: "Tools", title: "ChatGPT vs Claude vs Gemini: Which Writes Most Human-Like?", desc: "We compared outputs from three leading AI models through five detectors. The results may surprise you.", time: "7 min read" },
-    { tag: "Guide", title: "How to Use AI Responsibly in Academic Writing", desc: "A practical guide for students on leveraging AI tools ethically, avoiding plagiarism traps, and still producing excellent work.", time: "6 min read" },
+    { tag: "Guide", title: "How to Make AI Text Undetectable in 2025", desc: "A complete walkthrough for students on transforming ChatGPT output into natural, human-sounding prose that bypasses modern detectors.", time: "5 min read", slug: "how-to-make-ai-text-undetectable" },
+    { tag: "Tips", title: "Why AI Detectors Flag Your Writing (And How to Fix It)", desc: "Understanding the patterns AI detectors look for — sentence uniformity, perplexity scores, burstiness — and the exact techniques to beat them.", time: "7 min read", slug: "why-ai-detectors-flag-your-writing" },
+    { tag: "Comparison", title: "GPTZero vs Turnitin vs ZeroGPT: Which Is Most Accurate?", desc: "We tested 500 AI-generated essays across three top detectors. Here is what we found — and which one is hardest to fool.", time: "9 min read", slug: "gptzero-vs-turnitin-vs-zerogpt" },
+    { tag: "How-To", title: "Best Free AI Humanizer Tools Compared (2025)", desc: "Not all humanizers are equal. We ranked the top free tools based on detection bypass rate, output quality, and speed.", time: "6 min read", slug: "best-free-ai-humanizer-tools-2025" },
+    { tag: "Academic", title: "Is Using an AI Humanizer Cheating? The Full Debate", desc: "Universities are split. We break down the ethical arguments on both sides so you can make an informed decision.", time: "8 min read", slug: "is-using-ai-humanizer-cheating" },
+    { tag: "Tutorial", title: "How to Write AI-Assisted Essays Without Getting Caught", desc: "Step-by-step strategy used by top students — from prompt engineering to final humanization — to produce undetectable academic work.", time: "10 min read", slug: "how-to-write-ai-assisted-essays" },
+    { tag: "Research", title: "The Science Behind AI Writing Detection", desc: "How do detectors actually work? We break down perplexity, burstiness, and token prediction to explain what makes text detectable.", time: "8 min read", slug: "science-behind-ai-writing-detection" },
+    { tag: "Tools", title: "ChatGPT vs Claude vs Gemini: Which Writes Most Human-Like?", desc: "We compared outputs from three leading AI models through five detectors. The results may surprise you.", time: "7 min read", slug: "chatgpt-vs-claude-vs-gemini" },
+    { tag: "Guide", title: "How to Use AI Responsibly in Academic Writing", desc: "A practical guide for students on leveraging AI tools ethically, avoiding plagiarism traps, and still producing excellent work.", time: "6 min read", slug: "how-to-use-ai-responsibly" },
   ];
 
   const statsBar = [
@@ -357,15 +357,17 @@ export default function Home() {
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 20 }}>
             {articles.map((a) => (
-              <div key={a.title} className="hov-card" style={{ padding: 24, background: C.card, border: `1px solid ${C.border}`, borderRadius: 20, cursor: "pointer" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
-                  <span style={{ fontSize: 9, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.2em", color: C.purple, background: C.purpleDim, padding: "4px 10px", borderRadius: 6 }}>{a.tag}</span>
-                  <span style={{ fontSize: 9, color: C.textDim, fontWeight: 700 }}>{a.time}</span>
+              <a key={a.title} href={`/blog/${a.slug}`} style={{ textDecoration: "none" }}>
+                <div className="hov-card" style={{ padding: 24, background: C.card, border: `1px solid ${C.border}`, borderRadius: 20, cursor: "pointer", height: "100%", boxSizing: "border-box" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+                    <span style={{ fontSize: 9, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.2em", color: C.purple, background: C.purpleDim, padding: "4px 10px", borderRadius: 6 }}>{a.tag}</span>
+                    <span style={{ fontSize: 9, color: C.textDim, fontWeight: 700 }}>{a.time}</span>
+                  </div>
+                  <h3 style={{ fontSize: 14, fontWeight: 700, color: "#e5e5f0", lineHeight: 1.5, marginBottom: 10 }}>{a.title}</h3>
+                  <p style={{ fontSize: 11, color: C.textMid, lineHeight: 1.7, margin: 0 }}>{a.desc}</p>
+                  <div style={{ marginTop: 16, fontSize: 10, color: C.purple, fontWeight: 700 }}>Read More →</div>
                 </div>
-                <h3 style={{ fontSize: 14, fontWeight: 700, color: "#e5e5f0", lineHeight: 1.5, marginBottom: 10 }}>{a.title}</h3>
-                <p style={{ fontSize: 11, color: C.textMid, lineHeight: 1.7, margin: 0 }}>{a.desc}</p>
-                <div style={{ marginTop: 16, fontSize: 10, color: C.purple, fontWeight: 700 }}>Read More →</div>
-              </div>
+              </a>
             ))}
           </div>
         </div>

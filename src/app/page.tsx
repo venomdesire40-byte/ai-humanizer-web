@@ -129,7 +129,7 @@ export default function Home() {
             HUMAN<span style={{ color: C.purple }}>LY</span>
           </div>
           <div style={{ marginTop: 14, fontSize: 11, letterSpacing: "0.4em", color: C.textDim, fontWeight: 700, textTransform: "uppercase", fontFamily: "system-ui,sans-serif", opacity: introPhase >= 2 ? 1 : 0, transform: introPhase >= 2 ? "translateY(0)" : "translateY(10px)", transition: "all 0.7s cubic-bezier(0.16,1,0.3,1)" }}>
-            AI Text Humanizer • 2025
+            `AI Text Humanizer • ${new Date().getFullYear()}`
           </div>
           <div style={{ marginTop: 56, width: 220, height: 2, background: "#111", borderRadius: 2, overflow: "hidden", margin: "56px auto 0", opacity: introPhase >= 2 ? 1 : 0, transition: "opacity 0.5s ease" }}>
             <div style={{ height: "100%", borderRadius: 2, background: `linear-gradient(90deg, ${C.purple}, ${C.blue})`, width: introPhase >= 3 ? "100%" : introPhase >= 2 ? "35%" : "0%", transition: "width 1.1s cubic-bezier(0.4,0,0.2,1)" }} />

@@ -315,7 +315,7 @@ export default function Home() {
         <div style={{ marginBottom: 80, borderTop: `1px solid ${C.border}`, paddingTop: 64 }}>
           <h2 style={{ fontSize: 22, fontWeight: 700, color: "#fff", fontStyle: "italic", marginBottom: 16 }}>The #1 Free AI Humanizer for Academic Excellence 🎓</h2>
           <p style={{ color: C.textMid, lineHeight: 1.9, fontSize: 14, maxWidth: 800 }}>
-            Humanly AI is built specifically for students, researchers, and academics who use AI writing tools and need their final output to sound genuinely human. Our proprietary neural rewriting engine analyzes sentence structure, vocabulary distribution, and linguistic burstiness to produce text that passes the most advanced AI detection systems on the market today — completely free of charge.
+            FreeAIBypass is the most trusted free AI humanizer with no word limit — built specifically for students in the UK, US, and worldwide. Whether you need to bypass ZeroGPT, bypass Turnitin AI detection, or humanize ChatGPT text for your assignment, our tool delivers instant results at zero cost. No signup, no paywalls. Our neural rewriting engine is optimized for college essays, university assignments, and research papers — making it the go-to free AI humanizer for college students who need undetectable AI text fast.
           </p>
         </div>
 

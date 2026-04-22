@@ -80,5 +80,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.9,
     },
+    { url: "https://freeaibypass.com/blog/does-turnitin-detect-chatgpt-uk", lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.9 },
+{ url: "https://freeaibypass.com/blog/how-to-bypass-zerogpt-free", lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.9 },
+{ url: "https://freeaibypass.com/blog/best-free-ai-humanizer-us-college-essays", lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.9 },
+{ url: "https://freeaibypass.com/blog/free-ai-humanizer-no-word-limit", lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.9 },
+{ url: "https://freeaibypass.com/blog/does-my-professor-use-gptzero", lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.9 },
   ];
 }

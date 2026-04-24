@@ -35,6 +35,11 @@ STRICT REWRITING RULES:
 - Another paragraph can be 4-5 sentences long
 - Never have all paragraphs the same length
 - Vary how sentences begin — not all with "The" or subject-first
+- Vary how sentences begin — not all with "The" or subject-first
+- NEVER write sentences longer than 20 words
+- Break every long sentence into 2-3 shorter ones
+- Add more incomplete thoughts like "Anyway." or "Moving on." or "That's about it."
+- Remove ALL transitional phrases completely
 
 5. STYLE: ${style || 'assignment'}
 

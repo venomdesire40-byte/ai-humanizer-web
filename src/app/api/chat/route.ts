@@ -52,7 +52,7 @@ OUTPUT RULES:
 - Maintain the original meaning and all key information`;
 
 const message = await client.messages.create({
-model: "claude-opus-4-5",
+model: "claude-haiku-4-5-20251001",
 max_tokens: 2048,
 messages: [{ role: "user", content: finalPrompt }],
 });

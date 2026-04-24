@@ -1,68 +1,65 @@
 import { NextResponse } from "next/server";
+import Anthropic from "@anthropic-ai/sdk";
 
 export async function POST(req: Request) {
-  try {
-    const { prompt, style } = await req.json();
-    const apiToken = process.env.CLOUDFLARE_API_TOKEN;
-    const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
+try {
+const { prompt, style } = await req.json();
 
-    if (!apiToken || !accountId) {
-      return NextResponse.json({ output: "Error: API credentials missing." }, { status: 500 });
-    }
+const client = new Anthropic({
+apiKey: process.env.ANTHROPIC_API_KEY,
+});
 
-    const finalPrompt = `You are a human writer. Your job is to rewrite the given text so that it passes ALL AI detection tools like ZeroGPT, GPTZero, Turnitin, and Copyleaks.
+const finalPrompt = `You are a human university student writing in your own natural voice. Your task is to completely rewrite the given text so that it is 100% undetectable by AI detectors including GPTZero, ZeroGPT, Turnitin, Copyleaks, and Originality.ai.
 
-Follow these rules STRICTLY:
-- Write exactly like a real human being writes
-- Use VERY different sentence structures throughout — no patterns
-- Mix short, medium, and long sentences randomly
-- Start some sentences with "And", "But", "So", "Yet", "Still"
-- Use casual transitions like "On top of that", "Thing is", "What's more", "At the end of the day"
-- Add personal opinions occasionally like "I think", "In my view", "Personally"
-- Use simple everyday words — avoid fancy or complex vocabulary
-- Add slight grammar imperfections naturally — like a real person would
-- Never repeat the same sentence structure twice in a row
-- Vary paragraph lengths — some short, some long
-- Do NOT use bullet points or lists
-- Do NOT sound robotic, formal, or AI-generated
-- Do NOT use words like "crucial", "essential", "innovative", "leverage", "utilize"
-- Make it flow naturally like someone is actually thinking and writing
-- Style: ${style || 'assignment'}
+STRICT REWRITING RULES:
 
-Text to rewrite: ${prompt}
+1. SENTENCE STRUCTURE:
+- Mix sentence lengths aggressively: one word sentences are fine. So are longer ones that develop an idea over several clauses before eventually reaching their conclusion.
+- Never write two sentences of similar length back to back
+- Start at least 3 sentences with conjunctions: And, But, So, Yet, Because, Though
+- Break grammar rules occasionally like a real student would
 
-IMPORTANT: Output ONLY the rewritten text. No explanations, no notes, nothing else.`;
+2. VOCABULARY:
+- NEVER use these words: crucial, essential, delve, leverage, utilize, multifaceted, furthermore, moreover, nevertheless, thus, hence, notably, importantly, significantly, paradigm, foster, facilitate, demonstrate, indicate, subsequently
+- Use everyday words instead of formal ones
+- Mix formal and informal vocabulary naturally
 
-    const response = await fetch(
-      `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/@cf/meta/llama-3.3-70b-instruct-fp8-fast`,
-      {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${apiToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          messages: [
-            { role: "system", content: "You are a human writer who rewrites text to bypass AI detectors. You never reveal you are an AI." },
-            { role: "user", content: finalPrompt }
-          ],
-        }),
-      }
-    );
+3. HUMAN PATTERNS:
+- Add filler phrases: "to be honest", "the thing is", "what I find interesting is", "if you think about it"
+- Show mild uncertainty: "I think", "probably", "I guess", "it seems like", "from what I understand"
+- Add one personal observation or opinion naturally
+- Use contractions everywhere: it's, don't, isn't, can't, won't, there's, that's
 
-    const data = await response.json();
+4. RHYTHM AND FLOW:
+- One paragraph can be a single short sentence
+- Another paragraph can be 4-5 sentences long
+- Never have all paragraphs the same length
+- Vary how sentences begin — not all with "The" or subject-first
 
-    if (!response.ok) {
-      throw new Error(data.errors?.[0]?.message || "Cloudflare API Error");
-    }
+5. STYLE: ${style || 'assignment'}
 
-    const text = data.result.response;
-    return NextResponse.json({ output: text });
+TEXT TO REWRITE:
+${prompt}
 
-  } catch (error: any) {
-    console.error("Fetch Error:", error);
-    return NextResponse.json({ 
-      output: "System Error: " + error.message 
-    }, { status: 500 });
-  }
+OUTPUT RULES:
+- Output ONLY the rewritten text
+- No explanations, no notes, no "Here is the rewritten text:"
+- Just the pure rewritten content
+- Maintain the original meaning and all key information`;
+
+const message = await client.messages.create({
+model: "claude-opus-4-5",
+max_tokens: 2048,
+messages: [{ role: "user", content: finalPrompt }],
+});
+
+const text = message.content[0].type === "text" ? message.content[0].text : "";
+return NextResponse.json({ output: text });
+
+} catch (error: any) {
+console.error("Error:", error);
+return NextResponse.json({
+output: "System Error: " + error.message
+}, { status: 500 });
+}
 }

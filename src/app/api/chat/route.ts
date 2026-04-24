@@ -39,6 +39,7 @@ STRICT REWRITING RULES:
 - Break every long sentence into 2-3 shorter ones
 - Add more incomplete thoughts like "Anyway." or "Moving on." or "That's about it."
 - Remove ALL transitional phrases completely
+- IMPORTANT: Keep the output length similar to the input. Do NOT add extra content, explanations, or expand the text. Only rewrite what is given.
 
 5. STYLE: ${style || 'assignment'}
 

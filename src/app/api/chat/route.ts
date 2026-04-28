@@ -185,7 +185,7 @@ ${prompt}
 OUTPUT: Rewrite ONLY. No intro. No explanation. No "Here is". Just the rewritten text. Same length as input.`;
 
     const message = await client.messages.create({
-      model: "claude-haiku-4-5-20251001",
+      model: "claude-sonnet-4-5",
       max_tokens: 2048,
       messages: [{ role: "user", content: finalPrompt }],
     });

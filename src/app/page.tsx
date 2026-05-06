@@ -236,6 +236,21 @@ export default function Home() {
                   </button>
                 </div>
                 <div style={{ color: C.text, lineHeight: 1.9, fontSize: 16, whiteSpace: "pre-wrap" }}>{outputText}</div>
+                {/* Pro Tips */}
+<div style={{ marginTop: 24, padding: 20, background: "rgba(16,185,129,0.06)", border: "1px solid rgba(16,185,129,0.2)", borderRadius: 16 }}>
+  <p style={{ fontSize: 11, fontWeight: 900, color: "#10b981", textTransform: "uppercase", letterSpacing: "0.2em", margin: "0 0 12px" }}>
+    ✦ Get 90%+ Human Score
+  </p>
+  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+    {[
+      "✏️ Rewrite 1-2 sentences in your own words",
+      "💬 Add a personal opinion or example",
+      "🔄 Change any word that still feels too formal",
+    ].map((tip) => (
+      <p key={tip} style={{ fontSize: 13, color: "#8888aa", margin: 0, lineHeight: 1.6 }}>{tip}</p>
+    ))}
+  </div>
+</div>
               </div>
             </div>
           )}

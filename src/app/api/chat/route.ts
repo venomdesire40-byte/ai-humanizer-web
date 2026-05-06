@@ -91,75 +91,46 @@ export async function POST(req: Request) {
 
     const client = new Anthropic({ apiKey });
 
-    // PASS 1 — Deep restructuring
-    const pass1 = await client.messages.create({
-      model: "claude-opus-4-5",
-      max_tokens: 2048,
-      temperature: 1,
-      messages: [{
-        role: "user",
-        content: `You are rewriting text to make it completely undetectable by AI detectors.
+    const finalPrompt = `You are an expert at rewriting text to bypass AI detectors like GPTZero, ZeroGPT, Turnitin and Copyleaks.
 
-WHAT AI DETECTORS LOOK FOR — AND HOW TO DEFEAT EACH:
+AI detectors measure two things:
+1. PERPLEXITY — how predictable each word is
+2. BURSTINESS — how much sentence lengths vary
 
-1. PERPLEXITY (word predictability):
-- Use unexpected word choices that a human would naturally pick
-- Replace obvious words with less predictable synonyms
-- Add idiomatic expressions specific to the topic
-- Include domain-specific informal terms
+To defeat both:
 
-2. BURSTINESS (sentence length variation):
-- Create EXTREME variation: 3-word sentences next to 35-word sentences
-- Pattern: short. medium length. VERY LONG sentence that develops multiple connected ideas before reaching its natural conclusion. Short again. Medium.
-- Never three sentences of similar length in a row
+SENTENCE LENGTH — MOST IMPORTANT:
+Mix extremely short and long sentences. Example pattern:
+"Short sentence. Another short one. Now a much longer sentence that takes time to build its point, adding detail and context before finally wrapping up the thought completely. Short again. Medium length here."
+NEVER write two sentences of similar length back to back.
 
-3. HUMAN FINGERPRINTS:
-- One factual tangent that feels like a genuine thought
-- One mild contradiction or nuance: "though of course", "that said", "with some exceptions"
-- One casual observation mid-paragraph
-- Contractions throughout: it's don't isn't can't won't
+WORD CHOICE:
+Replace these immediately: crucial→really important, essential→needed, delve→look into, leverage→use, utilize→use, multifaceted→complex, furthermore→also, moreover→and, nevertheless→still, thus→so, hence→that's why, notably→interestingly, paradigm→way of thinking, foster→build, facilitate→help, demonstrate→show, indicate→suggest, subsequently→after that, in conclusion→so overall
 
-4. VOCABULARY — REPLACE ALL OF THESE:
-crucial→really important, essential→needed, delve→look into, leverage→use, utilize→use, multifaceted→complex, furthermore→also, moreover→and, nevertheless→still, thus→so, hence→that's why, notably→interestingly, paradigm→model, foster→build, facilitate→help, demonstrate→show, indicate→suggest, subsequently→after that, it is worth noting→worth mentioning, in conclusion→so overall, to summarize→in short
+HUMAN TOUCHES:
+- Use contractions: it's, don't, isn't, can't, won't, there's
+- Add one casual phrase: "to be honest", "the thing is", "oddly enough", "which makes sense"
+- Show mild uncertainty once: "I think", "probably", "seems like"
+- Start one sentence with: And, But, So, Yet, Honestly
 
 STYLE: ${style || 'essay'}
 
 TEXT TO REWRITE:
 ${prompt}
 
-Output the rewritten text only. No intro. No explanation.`
-      }]
-    });
+IMPORTANT: Output ONLY the rewritten text. Same length as input. No explanations.`;
 
-    const pass1Text = pass1.content[0].type === "text" ? pass1.content[0].text : prompt;
-
-    // PASS 2 — Final polish
-    const pass2 = await client.messages.create({
+    const message = await client.messages.create({
       model: "claude-opus-4-5",
       max_tokens: 2048,
       temperature: 1,
-      messages: [{
-        role: "user",
-        content: `Read this text and make final adjustments so it reads like a real person wrote it:
-
-1. Find any remaining formal or AI-sounding phrases and replace with natural alternatives
-2. Make sure no two consecutive sentences are the same length
-3. Add one subtle personal touch — a brief reaction like "which makes sense" or "oddly enough" or "to be fair"
-4. Check contractions are used throughout
-5. Remove any remaining transitional phrases like "furthermore" "moreover" "in conclusion"
-6. Make the opening sentence unexpected — not starting with "The" or a subject noun
-
-TEXT:
-${pass1Text}
-
-Output the final text only. Nothing else.`
-      }]
+      messages: [{ role: "user", content: finalPrompt }],
     });
 
-    const finalText = pass2.content[0].type === "text" ? pass2.content[0].text : pass1Text;
+    const text = message.content[0].type === "text" ? message.content[0].text : "";
 
     return NextResponse.json({
-      output: finalText,
+      output: text,
       remaining: rateLimit.remaining
     });
 
